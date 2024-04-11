@@ -2,16 +2,22 @@
 package com.mycompany.peluqueria_canina.igu;
 
 import com.mycompany.peluqueria_canina.logica.Controladora;
+import com.mycompany.peluqueria_canina.logica.Mascota;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 
-public class CargaDatos extends javax.swing.JFrame {
+public class EditarDatos extends javax.swing.JFrame {
     
-    Controladora controlLogica = new Controladora();
+    Controladora control = null;
+    int num_cliente;
+    Mascota masco=null;
 
-    public CargaDatos() {
+    public EditarDatos(int num_cliente) {
+        control= new Controladora();
+        //this.num_cliente = num_cliente;
         initComponents();
+        cargarDatos(num_cliente);
     }
 
 
@@ -46,7 +52,7 @@ public class CargaDatos extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel1.setText("Carga de Datos");
+        jLabel1.setText("Edición de Datos");
 
         jLabel3.setText("Nombre de Cliente");
 
@@ -161,7 +167,7 @@ public class CargaDatos extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         btnGuardar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        btnGuardar.setText("Guardar");
+        btnGuardar.setText("Guardar Cambios");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -180,18 +186,21 @@ public class CargaDatos extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(329, 329, 329))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(329, 329, 329))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(160, 160, 160))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(219, 219, 219)
@@ -207,13 +216,13 @@ public class CargaDatos extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(58, 58, 58))
+                        .addGap(9, 9, 9))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addContainerGap(516, Short.MAX_VALUE)
@@ -259,14 +268,19 @@ public class CargaDatos extends javax.swing.JFrame {
         String alergico = (String) cmbAlergico.getSelectedItem();
         String atencionEspecial = (String) cmbAtencionEspecial.getSelectedItem();
         
+        control.editarMascota(masco, nombreMascota, color, nombreDuenio, raza, telefonoDuenio, observaciones, alergico, atencionEspecial);
         
-        controlLogica.guardar(nombreMascota, color, nombreDuenio, raza, telefonoDuenio, observaciones, alergico, atencionEspecial);
-        
-        JOptionPane optionPane = new JOptionPane("Se guardó exitosamente el cliente.");
+        JOptionPane optionPane = new JOptionPane("Se editó exitosamente el cliente.");
         optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-        JDialog dialog = optionPane.createDialog("Guardado exitoso");
+        JDialog dialog = optionPane.createDialog("Edición exitosa");
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
+        
+        VerDatos pantalla = new VerDatos();
+        pantalla.setVisible(true);
+        pantalla.setLocationRelativeTo(null);
+        this.dispose();
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 
@@ -295,4 +309,26 @@ public class CargaDatos extends javax.swing.JFrame {
     private javax.swing.JTextField txtRaza;
     private javax.swing.JTextField txtTelefonoDuenio;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarDatos(int num_cliente) {
+        
+        this.masco = control.traerMascota(num_cliente);
+        
+        txtColor.setText(masco.getColor());
+        txtNombreCliente.setText(masco.getNombreMascota());
+        txtNombreDuenio.setText(masco.getUnDuenio().getNombre());
+        txtRaza.setText(masco.getRaza());
+        txtTelefonoDuenio.setText(masco.getUnDuenio().getTelDuenio());
+        txtObservaciones.setText(masco.getObservaciones());
+        if (masco.getAlergico().equalsIgnoreCase("Si")){
+            cmbAlergico.setSelectedIndex(1);
+        } else if (masco.getAlergico().equalsIgnoreCase("No")){
+            cmbAlergico.setSelectedIndex(2);
+        }
+        if (masco.getAtencionEspecial().equalsIgnoreCase("Si")){
+            cmbAtencionEspecial.setSelectedIndex(1);
+        } else if (masco.getAtencionEspecial().equalsIgnoreCase("No")){
+            cmbAtencionEspecial.setSelectedIndex(2);
+        }
+    }
 }
